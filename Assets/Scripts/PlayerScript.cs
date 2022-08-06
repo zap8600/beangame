@@ -5,6 +5,8 @@ using Mirror;
 
 public class PlayerScript : NetworkBehaviour
 {
+	private float currentHeight;
+	
 	private SceneScript sceneScript;
 	
 	public TextMesh playerNameText;
@@ -66,7 +68,14 @@ public class PlayerScript : NetworkBehaviour
 	public void CmdSendPlayerMessage()
 	{
 		if (sceneScript) 
-			sceneScript.statusText = $"{playerName} says {sceneScript.textInput.text}";
+			sceneScript.statusText = $"{playerName} says hello.";
+	}
+	
+	[Command]
+	public void CmdGROW()
+	{
+		currentHeight = transform.scale.y;
+		transform.scale = new Vector3(1, currentHeight + 1.25, 1);
 	}
 	
 	void Update() {

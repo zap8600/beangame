@@ -7,8 +7,6 @@ public class SceneScript : NetworkBehaviour
     public Text canvasStatusText;
     public PlayerScript playerScript;
 	
-	public InputField textInput;
-	
     [SyncVar(hook = nameof(OnStatusTextChanged))]
     public string statusText;
 
