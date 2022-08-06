@@ -71,13 +71,6 @@ public class PlayerScript : NetworkBehaviour
 			sceneScript.statusText = $"{playerName} says hello.";
 	}
 	
-	[Command]
-	public void CmdGROW()
-	{
-		currentHeight = transform.scale.y;
-		transform.scale = new Vector3(1, currentHeight + 1.25, 1);
-	}
-	
 	void Update() {
 		float moveX;
 		float moveZ;
