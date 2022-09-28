@@ -1,11 +1,14 @@
 using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class HUD : MonoBehaviour
 {
     public GameObject PanelStart;
     public GameObject PanelStop;
+    
+    public GameObject PanelWebGLCheck;
 
     public Button buttonHost, buttonServer, buttonClient, buttonStop;
 
@@ -17,6 +20,11 @@ public class HUD : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if(Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            PanelWebGLCheck.SetActive(false);
+        }
+        
         if (NetworkManager.singleton.networkAddress != "localhost") { inputFieldAddress.text = NetworkManager.singleton.networkAddress; }
         
         inputFieldAddress.onValueChanged.AddListener(delegate { ValueChangeCheck(); });
@@ -69,8 +77,7 @@ public class HUD : MonoBehaviour
         {
             NetworkManager.singleton.StopServer();
         }
-
-        SetupCanvas();
+        SceneManager.LoadScene("SampleScene");
     }
 
     public void SetupCanvas()
@@ -91,6 +98,14 @@ public class HUD : MonoBehaviour
                 PanelStart.SetActive(true);
                 PanelStop.SetActive(false);
             }
+        }
+        else if (!NetworkClient.active && NetworkServer.active)
+        {
+            PanelStart.SetActive(false);
+            PanelStop.SetActive(true);
+            
+            clientText.text = "Client: Server Only.";
+            serverText.text = "Server: Active.";
         }
         else
         {
