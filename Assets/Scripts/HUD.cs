@@ -83,7 +83,7 @@ public class HUD : MonoBehaviour
             {
                 PanelStart.SetActive(false);
                 PanelStop.SetActive(true);
-                clientText.text = "Client: address=" + NetworkManager.singleton.networkAddress;
+                clientText.text = "Client: Address=" + NetworkManager.singleton.networkAddress;
                 serverText.text = "Server: Client Only.";
             }
             else
@@ -100,11 +100,11 @@ public class HUD : MonoBehaviour
             // server / client status message
             if (NetworkServer.active)
             {
-                serverText.text = "Server: active. Transport: " + Transport.activeTransport;
+                serverText.text = "Server: Active";
             }
             if (NetworkClient.isConnected)
             {
-                clientText.text = "Client: address=" + NetworkManager.singleton.networkAddress;
+                clientText.text = "Client: Address=" + NetworkManager.singleton.networkAddress;
             }
         }
     }
