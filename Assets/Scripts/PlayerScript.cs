@@ -7,6 +7,8 @@ using TMPro;
 
 public class PlayerScript : NetworkBehaviour
 {
+	public GameObject PanelAndroid;
+	
 	private float currentHeight;
 	
 	private SceneScript sceneScript;
@@ -33,7 +35,6 @@ public class PlayerScript : NetworkBehaviour
 		GetComponent<Renderer>().material = playerMaterialClone;
 	}
 	
-	public Canvas canvas;
 	public Joystick joystickL;
 	public override void OnStartLocalPlayer() {
 		sceneScript.playerScript = this;
@@ -49,7 +50,7 @@ public class PlayerScript : NetworkBehaviour
         CmdSetupPlayer(name, color);
         		
 		if(Application.platform == RuntimePlatform.Android) {
-			canvas.GetComponent<Canvas>().enabled = true;
+			PanelAndroid.SetActive(true);
 		}
 	}
 	
