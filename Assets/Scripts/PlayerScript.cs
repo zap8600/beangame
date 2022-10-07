@@ -11,8 +11,6 @@ public class PlayerScript : NetworkBehaviour
 	
 	private float currentHeight;
 	
-	private SceneScript sceneScript;
-	
 	public TextMesh playerNameText;
 	public GameObject floatingInfo;
 	
@@ -37,7 +35,6 @@ public class PlayerScript : NetworkBehaviour
 	
 	public Joystick joystickL;
 	public override void OnStartLocalPlayer() {
-		sceneScript.playerScript = this;
 		
 		Camera.main.transform.SetParent(transform);
 		Camera.main.transform.localPosition = new Vector3(0, 0, 0);
@@ -53,24 +50,11 @@ public class PlayerScript : NetworkBehaviour
 			PanelAndroid.SetActive(true);
 		}
 	}
-	
-	void Awake()
-	{
-    		//allow all players to run this
-    		sceneScript = GameObject.FindObjectOfType<SceneScript>();
-	}
+      
     	[Command]
 	public void CmdSetupPlayer(string _name, Color _col) {
 		playerName = _name;
 		playerColor = _col;
-		sceneScript.statusText = $"{playerName} joined.";
-	}
-	
-	[Command]
-	public void CmdSendPlayerMessage()
-	{
-		if (sceneScript) 
-			sceneScript.statusText = $"{playerName} says hello.";
 	}
 	
 	void Update() {
