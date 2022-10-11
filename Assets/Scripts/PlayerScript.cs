@@ -7,6 +7,8 @@ using TMPro;
 
 public class PlayerScript : NetworkBehaviour
 {
+	private SceneScript sceneScript;
+
 	public GameObject PanelAndroid;
 	
 	private float currentHeight;
@@ -35,7 +37,8 @@ public class PlayerScript : NetworkBehaviour
 	
 	public Joystick joystickL;
 	public override void OnStartLocalPlayer() {
-		
+		sceneScript.playerScript = this;
+
 		Camera.main.transform.SetParent(transform);
 		Camera.main.transform.localPosition = new Vector3(0, 0, 0);
 		
@@ -50,11 +53,20 @@ public class PlayerScript : NetworkBehaviour
 			PanelAndroid.SetActive(true);
 		}
 	}
-      
-    	[Command]
-	public void CmdSetupPlayer(string _name, Color _col) {
+
+	[Command]
+	public void CmdSendPlayerMessage()
+	{
+		if (sceneScript)
+			sceneScript.statusText = $"{playerName} says hello {Random.Range(10, 99)}";
+	}
+
+    [Command]
+	public void CmdSetupPlayer(string _name, Color _col)
+	{
 		playerName = _name;
 		playerColor = _col;
+		sceneScript.statusText = $"{playerName} joined.";
 	}
 	
 	void Update() {
