@@ -7,7 +7,8 @@ using TMPro;
 
 public class PlayerScript : NetworkBehaviour
 {
-	private SceneScript sceneScript;
+	public GameObject PanelChat;
+	public TMP_Text canvasStatusText;
 
 	public GameObject PanelAndroid;
 	
@@ -17,28 +18,37 @@ public class PlayerScript : NetworkBehaviour
 	public GameObject floatingInfo;
 	
 	private Material playerMaterialClone;
-	
+
 	[SyncVar(hook = nameof(OnNameChanged))]
 	public string playerName;
 	
 	[SyncVar(hook = nameof(OnColorChanged))]
 	public Color playerColor = Color.white;
-	
-	void OnNameChanged(string _Old, string _New) {
+
+	[SyncVar(hook = nameof(OnStatusTextChanged))]
+	public string statusText;
+
+    void OnNameChanged(string _Old, string _New)
+    {
 		playerNameText.text = playerName;
 	}
-	
-	void OnColorChanged(Color _Old, Color _New) {
+
+	void OnColorChanged(Color _Old, Color _New)
+	{
 		playerNameText.color = _New;
 		playerMaterialClone = new Material(GetComponent<Renderer>().material);
 		playerMaterialClone.color = _New;
 		GetComponent<Renderer>().material = playerMaterialClone;
 	}
-	
-	public Joystick joystickL;
-	public override void OnStartLocalPlayer() {
-		sceneScript.playerScript = this;
 
+	void OnStatusTextChanged(string _Old, string _New)
+	{
+		canvasStatusText.text = statusText;
+	}
+
+	public Joystick joystickL;
+    public override void OnStartLocalPlayer()
+    {
 		Camera.main.transform.SetParent(transform);
 		Camera.main.transform.localPosition = new Vector3(0, 0, 0);
 		
@@ -54,11 +64,9 @@ public class PlayerScript : NetworkBehaviour
 		}
 	}
 
-	[Command]
-	public void CmdSendPlayerMessage()
-	{
-		if (sceneScript)
-			sceneScript.statusText = $"{playerName} says hello {Random.Range(10, 99)}";
+	public void ButtonSendMessage()
+    {
+		CmdSendPlayerMessage();
 	}
 
     [Command]
@@ -66,10 +74,17 @@ public class PlayerScript : NetworkBehaviour
 	{
 		playerName = _name;
 		playerColor = _col;
-		sceneScript.statusText = $"{playerName} joined.";
+		statusText = $"{playerName} joined.";
 	}
-	
-	void Update() {
+
+	[Command]
+	public void CmdSendPlayerMessage()
+    {
+		statusText = $"{playerName} says hello {Random.Range(10, 99)}";
+	}
+
+    void Update()
+    {
 		float moveX;
 		float moveZ;
 		if(!isLocalPlayer) {
