@@ -2,20 +2,23 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class HUD : MonoBehaviour
 {
     public GameObject PanelStart;
     public GameObject PanelStop;
+    public GameObject PanelChat;
+    public GameObject PanelServer;
     
     public GameObject PanelWebGLCheck;
 
     public Button buttonHost, buttonServer, buttonClient, buttonStop;
 
-    public InputField inputFieldAddress;
+    public TMP_InputField inputFieldAddress;
 
-    public Text serverText;
-    public Text clientText;
+    public TMP_Text serverText;
+    public TMP_Text clientText;
     
     // Start is called before the first frame update
     void Start()
@@ -90,6 +93,7 @@ public class HUD : MonoBehaviour
             {
                 PanelStart.SetActive(false);
                 PanelStop.SetActive(true);
+                PanelChat.SetActive(true);
                 clientText.text = "Client: Address=" + NetworkManager.singleton.networkAddress;
                 serverText.text = "Server: Client Only.";
             }
@@ -103,12 +107,15 @@ public class HUD : MonoBehaviour
         {
             PanelStart.SetActive(false);
             PanelStop.SetActive(true);
-            
+            PanelChat.SetActive(true);
+            PanelServer.SetActive(false);
+
             clientText.text = "Client: Server Only.";
             serverText.text = "Server: Active.";
         }
         else
         {
+            PanelChat.SetActive(true);
             PanelStart.SetActive(false);
             PanelStop.SetActive(true);
 

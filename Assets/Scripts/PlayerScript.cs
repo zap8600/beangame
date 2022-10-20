@@ -7,8 +7,7 @@ using TMPro;
 
 public class PlayerScript : NetworkBehaviour
 {
-	public GameObject PanelChat;
-	public TMP_Text canvasStatusText;
+	private SceneScript sceneScript;
 
 	public GameObject PanelAndroid;
 	
@@ -25,9 +24,6 @@ public class PlayerScript : NetworkBehaviour
 	[SyncVar(hook = nameof(OnColorChanged))]
 	public Color playerColor = Color.white;
 
-	[SyncVar(hook = nameof(OnStatusTextChanged))]
-	public string statusText;
-
     void OnNameChanged(string _Old, string _New)
     {
 		playerNameText.text = playerName;
@@ -41,14 +37,11 @@ public class PlayerScript : NetworkBehaviour
 		GetComponent<Renderer>().material = playerMaterialClone;
 	}
 
-	void OnStatusTextChanged(string _Old, string _New)
-	{
-		canvasStatusText.text = statusText;
-	}
-
 	public Joystick joystickL;
     public override void OnStartLocalPlayer()
     {
+        sceneScript.playerScript = this;
+
 		Camera.main.transform.SetParent(transform);
 		Camera.main.transform.localPosition = new Vector3(0, 0, 0);
 		
@@ -64,23 +57,24 @@ public class PlayerScript : NetworkBehaviour
 		}
 	}
 
-	public void ButtonSendMessage()
+	void Awake()
     {
-		CmdSendPlayerMessage();
-	}
+		sceneScript = GameObject.FindObjectOfType<SceneScript>();
+    }
 
     [Command]
 	public void CmdSetupPlayer(string _name, Color _col)
 	{
 		playerName = _name;
 		playerColor = _col;
-		statusText = $"{playerName} joined.";
+		sceneScript.statusText = $"{playerName} joined.";
 	}
 
 	[Command]
 	public void CmdSendPlayerMessage()
     {
-		statusText = $"{playerName} says hello {Random.Range(10, 99)}";
+		if (sceneScript)
+			sceneScript.statusText = sceneScript.messageText.text;
 	}
 
     void Update()
