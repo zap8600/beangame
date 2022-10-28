@@ -7,7 +7,6 @@ using TMPro;
 public class SceneScript : NetworkBehaviour
 {
     public TMP_Text canvasStatusText;
-    public TMP_InputField messageText;
     public PlayerScript playerScript;
 
     [SyncVar(hook = nameof(OnStatusTextChanged))]

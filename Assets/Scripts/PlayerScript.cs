@@ -74,7 +74,7 @@ public class PlayerScript : NetworkBehaviour
 	public void CmdSendPlayerMessage()
     {
 		if (sceneScript)
-			sceneScript.statusText = sceneScript.messageText.text;
+			sceneScript.statusText = $"{playerName} says hello {Random.Range(10, 99)}";
 	}
 
     void Update()
